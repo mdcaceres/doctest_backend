@@ -3,8 +3,8 @@ package middleware
 import (
 	"fmt"
 	"github.com/mdcaceres/doctest/datasource"
-	"github.com/mdcaceres/doctest/domains"
-	"github.com/mdcaceres/doctest/domains/dto"
+	"github.com/mdcaceres/doctest/models"
+	"github.com/mdcaceres/doctest/models/dto"
 	"os"
 	"strconv"
 	"strings"
@@ -49,7 +49,7 @@ func DeserializeUser(c *fiber.Ctx) error {
 
 	}
 
-	var user domains.User
+	var user models.User
 	datasource.DB.First(&user, "id = ?", fmt.Sprint(claims["iss"]))
 
 	if claims["iss"].(string) != strconv.Itoa(int(user.ID)) {

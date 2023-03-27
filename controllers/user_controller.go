@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/mdcaceres/doctest/domains/dto"
+	"github.com/mdcaceres/doctest/models/dto"
 )
 
 func GetMe(c *fiber.Ctx) error {

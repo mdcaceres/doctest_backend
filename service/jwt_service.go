@@ -2,8 +2,8 @@ package service
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"github.com/mdcaceres/doctest/domains"
-	"github.com/mdcaceres/doctest/domains/auth"
+	"github.com/mdcaceres/doctest/models"
+	"github.com/mdcaceres/doctest/models/auth"
 	"os"
 	"strconv"
 	"time"
@@ -13,7 +13,7 @@ var (
 	jwtPrivateToken = os.Getenv("secret")
 )
 
-func GenerateToken(user *domains.User) (string, error) {
+func GenerateToken(user *models.User) (string, error) {
 	claims := auth.Claims{}
 	claims.ExpiresAt = time.Now().Add(time.Hour).Unix()
 	claims.IssuedAt = time.Now().Unix()

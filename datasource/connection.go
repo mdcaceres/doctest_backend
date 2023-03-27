@@ -1,7 +1,8 @@
 package datasource
 
 import (
-	"github.com/mdcaceres/doctest/domains"
+	"github.com/mdcaceres/doctest/models"
+	"github.com/mdcaceres/doctest/models/test"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -18,13 +19,13 @@ func Connect() {
 	DB = conn
 
 	conn.AutoMigrate(
-		&domains.User{},
-		&domains.Project{},
-		&domains.Role{},
-		&domains.Bug{},
-		&domains.Media{},
-		&domains.TestCase{},
-		&domains.TestSuit{},
-		&domains.TestStep{},
-		&domains.TestResult{})
+		&models.User{},
+		&models.Project{},
+		&models.Role{},
+		&models.Bug{},
+		&models.Media{},
+		&test.Case{},
+		&test.Suit{},
+		&test.Step{},
+		&test.Result{})
 }

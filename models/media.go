@@ -1,4 +1,4 @@
-package domains
+package models
 
 type Media struct {
 	ID           uint   `json:"id"`

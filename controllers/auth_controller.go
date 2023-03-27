@@ -4,9 +4,9 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	"github.com/mdcaceres/doctest/datasource"
-	"github.com/mdcaceres/doctest/domains"
-	"github.com/mdcaceres/doctest/domains/auth"
-	"github.com/mdcaceres/doctest/domains/dto"
+	"github.com/mdcaceres/doctest/models"
+	"github.com/mdcaceres/doctest/models/auth"
+	"github.com/mdcaceres/doctest/models/dto"
 	"github.com/mdcaceres/doctest/service"
 	"github.com/mdcaceres/doctest/utils"
 	"golang.org/x/crypto/bcrypt"
@@ -40,7 +40,7 @@ func Register(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
 	}
 
-	user := domains.User{
+	user := models.User{
 		Name:     payload.Name,
 		Email:    strings.ToLower(payload.Email),
 		Photo:    &payload.Photo,
@@ -72,7 +72,7 @@ func Login(c *fiber.Ctx) error {
 
 	}
 
-	var user domains.User
+	var user models.User
 
 	result := datasource.DB.Where("email = ?", credentials.Email).First(&user)
 
@@ -136,7 +136,7 @@ func User(c *fiber.Ctx) error {
 
 	claims := token.Claims.(*auth.Claims)
 
-	var user domains.User
+	var user models.User
 
 	datasource.DB.Where("id = ?", claims.Issuer).First(&user)
 
