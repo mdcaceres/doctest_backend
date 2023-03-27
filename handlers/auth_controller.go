@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"github.com/dgrijalva/jwt-go"
@@ -6,16 +6,17 @@ import (
 	"github.com/mdcaceres/doctest/datasource"
 	"github.com/mdcaceres/doctest/models"
 	"github.com/mdcaceres/doctest/models/auth"
-	"github.com/mdcaceres/doctest/models/dto"
-	"github.com/mdcaceres/doctest/service"
+	"github.com/mdcaceres/doctest/services"
 	"github.com/mdcaceres/doctest/utils"
 	"golang.org/x/crypto/bcrypt"
 	"os"
-	"strings"
 	"time"
 )
 
-var secret = os.Getenv("secret")
+var (
+	secret      = os.Getenv("secret")
+	userService = services.NewUserService()
+)
 
 func Register(c *fiber.Ctx) error {
 	var payload *auth.SignUpInput
@@ -30,32 +31,13 @@ func Register(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "errors": errors})
 	}
 
-	if payload.Password != payload.PasswordConfirm {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": "Passwords do not match"})
+	userResponse, serviceError := userService.Create(c, payload)
+
+	if serviceError != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "errors": serviceError})
 	}
 
-	encryptPass, err := bcrypt.GenerateFromPassword([]byte(payload.Password), bcrypt.DefaultCost)
-
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": err.Error()})
-	}
-
-	user := models.User{
-		Name:     payload.Name,
-		Email:    strings.ToLower(payload.Email),
-		Photo:    &payload.Photo,
-		Password: encryptPass,
-	}
-
-	result := datasource.DB.Create(&user)
-
-	if result.Error != nil && strings.Contains(result.Error.Error(), "duplicate key value violates unique") {
-		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"status": "fail", "message": "User with that email already exists"})
-	} else if result.Error != nil {
-		return c.Status(fiber.StatusBadGateway).JSON(fiber.Map{"status": "error", "message": "Something bad happened"})
-	}
-
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "data": fiber.Map{"user": dto.GetUserResponse(&user)}})
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "data": fiber.Map{"user": userResponse}})
 }
 
 func Login(c *fiber.Ctx) error {
@@ -94,7 +76,7 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	token, err := service.GenerateToken(&user)
+	token, err := services.GenerateToken(&user)
 
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError)
