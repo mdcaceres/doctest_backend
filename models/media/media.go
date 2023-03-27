@@ -1,4 +1,4 @@
-package models
+package media
 
 type Media struct {
 	ID           uint   `json:"id"`

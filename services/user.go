@@ -63,7 +63,7 @@ func (u *UserService) Create(c *fiber.Ctx, payload *auth.SignUpInput) (*dto.User
 	createdUser, err := u.UserProvider.Create(c, &user)
 
 	if err != nil {
-		return nil, errors.New("error when provider creates a user")
+		return nil, err
 	}
 
 	userResponse := dto.GetUserResponse(createdUser)

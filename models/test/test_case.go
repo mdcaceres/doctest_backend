@@ -1,8 +1,6 @@
 package test
 
-import (
-	"gorm.io/gorm"
-)
+import "gorm.io/gorm"
 
 type Case struct {
 	gorm.Model

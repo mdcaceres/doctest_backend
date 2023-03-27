@@ -5,4 +5,5 @@ type Step struct {
 	Order       uint   `json:"order"`
 	Description string `json:"description"`
 	TestCaseID  uint
+	TestCase    *Case `json:"test_case"`
 }

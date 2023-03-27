@@ -15,13 +15,13 @@ type UserProvider struct {
 
 func NewUserProvider() UserProvider {
 	return UserProvider{
-		DB: datasource.DB,
+		DB: datasource.GetDB(),
 	}
 }
 
 func (p *UserProvider) Create(ctx *fiber.Ctx, user *models.User) (*models.User, error) {
 	result := p.DB.Create(user)
-	if result.Error != nil && strings.Contains(result.Error.Error(), "duplicate key value violates unique") {
+	if result.Error != nil && strings.Contains(result.Error.Error(), "Duplicate entry") {
 		return nil, errors.New("user with that email already exists")
 	} else if result.Error != nil {
 		return nil, result.Error

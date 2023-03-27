@@ -2,6 +2,7 @@ package datasource
 
 import (
 	"github.com/mdcaceres/doctest/models"
+	"github.com/mdcaceres/doctest/models/media"
 	"github.com/mdcaceres/doctest/models/test"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -23,9 +24,13 @@ func Connect() {
 		&models.Project{},
 		&models.Role{},
 		&models.Bug{},
-		&models.Media{},
+		&media.Media{},
 		&test.Case{},
-		&test.Suit{},
+		//&test.Suit{},
 		&test.Step{},
 		&test.Result{})
+}
+
+func GetDB() *gorm.DB {
+	return DB
 }

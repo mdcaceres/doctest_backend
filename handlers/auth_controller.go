@@ -31,10 +31,10 @@ func Register(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "errors": errors})
 	}
 
-	userResponse, serviceError := userService.Create(c, payload)
+	userResponse, serviceError := services.NewUserService().Create(c, payload)
 
 	if serviceError != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "errors": serviceError})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "errors": serviceError.Error()})
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "data": fiber.Map{"user": userResponse}})
