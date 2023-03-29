@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	"github.com/mdcaceres/doctest/datasource"
 	"github.com/mdcaceres/doctest/models"
@@ -99,30 +98,6 @@ func Login(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"message": token,
 	})
-}
-
-func User(c *fiber.Ctx) error {
-	cookie := c.Cookies("X-Tiger-Token")
-
-	token, err := jwt.ParseWithClaims(cookie, &auth.Claims{},
-		func(token *jwt.Token) (interface{}, error) {
-			return []byte(secret), nil
-		})
-
-	if err != nil {
-		c.Status(fiber.StatusUnauthorized)
-		return c.JSON(fiber.Map{
-			"message": "unauthenticated",
-		})
-	}
-
-	claims := token.Claims.(*auth.Claims)
-
-	var user models.User
-
-	datasource.DB.Where("id = ?", claims.Issuer).First(&user)
-
-	return c.JSON(user)
 }
 
 func Logout(c *fiber.Ctx) error {

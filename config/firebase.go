@@ -27,7 +27,10 @@ func SetupFirebase() (*firebase.App, context.Context, *messaging.Client) {
 	}
 
 	//Messaging client
-	client, _ := app.Messaging(ctx)
+	client, err := app.Messaging(ctx)
+	if err != nil {
+		panic("Firebase get client error")
+	}
 
 	return app, ctx, client
 }
