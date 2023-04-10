@@ -55,13 +55,8 @@ func (u *UserService) GetById(id uint) (*dto.UserResponse, error) {
 }
 
 func (u *UserService) Create(c *fiber.Ctx, payload *auth.SignUpInput) (*dto.UserResponse, error) {
-	if payload.Password != payload.PasswordConfirm {
+	if payload.Password != payload.Confirm {
 		return nil, errors.New("password do not match")
-	}
-
-	notificationToken := c.Cookies("X-Notification-Token")
-	if notificationToken == "" {
-		return nil, errors.New("notification token is required")
 	}
 
 	encryptPass, err := bcrypt.GenerateFromPassword([]byte(payload.Password), bcrypt.DefaultCost)
@@ -69,12 +64,15 @@ func (u *UserService) Create(c *fiber.Ctx, payload *auth.SignUpInput) (*dto.User
 		return nil, err
 	}
 
+	role := models.Role{Name: models.Admin}
+
 	user := models.User{
 		Name:              payload.Name,
 		Email:             strings.ToLower(payload.Email),
-		Photo:             &payload.Photo,
+		Photo:             payload.Photo,
 		Password:          encryptPass,
-		NotificationToken: notificationToken,
+		NotificationToken: payload.NotificationToken,
+		Roles:             []models.Role{role},
 	}
 
 	createdUser, err := u.UserProvider.Create(&user)

@@ -85,12 +85,10 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	cookie := fiber.Cookie{
-		Name:     "X-Tiger-Token",
-		Value:    token,
-		Path:     "/",
-		Expires:  time.Now().Add(time.Hour),
-		HTTPOnly: true,
-		Domain:   "localhost",
+		Name:    "X-Tiger-Token",
+		Value:   token,
+		Path:    "/",
+		Expires: time.Now().Add(time.Hour),
 	}
 
 	c.Cookie(&cookie)

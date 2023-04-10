@@ -15,6 +15,7 @@ var (
 
 func GenerateToken(user *models.User) (string, error) {
 	claims := auth.Claims{}
+	claims.ID = user.ID
 	claims.ExpiresAt = time.Now().Add(time.Hour).Unix()
 	claims.IssuedAt = time.Now().Unix()
 	claims.Issuer = strconv.Itoa(int(user.ID))

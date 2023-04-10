@@ -25,7 +25,10 @@ func StartApplication() {
 
 	app.Use(
 		cors.New(cors.Config{
-			AllowCredentials: true}),
+			AllowCredentials: true,
+			AllowOrigins:     "http://localhost:4200",
+			AllowMethods:     "POST, PUT, DELETE, GET, OPTIONS",
+		}),
 		/*
 			AllowOrigins:     "http://localhost:3000",
 			AllowHeaders:     "Origin, Content-Type, Accept",
@@ -40,10 +43,12 @@ func StartApplication() {
 
 	log.Fatal(app.Listen(":8080"))
 
+	initFireBase()
+
 	logs.InfoLog.Println("space rocket in orbit")
 }
 
 func initFireBase() {
 	app, _, _ := config.SetupFirebase()
-	services.SendToToken(app, "token")
+	services.SendToToken(app, "fcQ5n5Emz0aww8rlO4I4st:APA91bGVkJJcke2ERgxfpdZe0F2KmuiH4xmHm_bUjx1O76y3tjpkUmQ5zdxdbv44cQkqsdsXwlYHxZ53ercngm0P39rP5aL_JDJ3gi-tMrb7vwyU_dS3erAhAFgAHamq7IoWqioRFCGS")
 }

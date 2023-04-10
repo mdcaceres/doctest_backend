@@ -9,7 +9,7 @@ import (
 
 func MapUrls(app *fiber.App) {
 	micro := app.Group("/api")
-	micro.Post("/auth/register", handlers.Register)
+	micro.Post("/auth/signup", handlers.Register)
 	micro.Post("/auth/login", handlers.Login)
 	micro.Get("/auth/logout", middleware.DeserializeUser, handlers.Logout)
 	micro.Get("/users/me", middleware.DeserializeUser, handlers.GetMe)
