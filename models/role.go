@@ -4,12 +4,11 @@ import "gorm.io/gorm"
 
 const (
 	Admin  = "ADMINISTRATOR"
-	user   = "USER"
-	tester = "TESTER"
-	client = "CLIENT"
+	Tester = "TESTER"
+	Client = "CLIENT"
 )
 
-var AvailableRoles = []string{Admin, user, tester, client}
+var AvailableRoles = []string{Admin, Tester, Client}
 
 type Role struct {
 	gorm.Model

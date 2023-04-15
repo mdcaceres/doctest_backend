@@ -64,7 +64,7 @@ func (u *UserService) Create(c *fiber.Ctx, payload *auth.SignUpInput) (*dto.User
 		return nil, err
 	}
 
-	role := models.Role{Name: models.Admin}
+	role := models.Role{Name: models.Tester}
 
 	user := models.User{
 		Name:              payload.Name,

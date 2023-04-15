@@ -55,7 +55,7 @@ func Login(c *fiber.Ctx) error {
 
 	var user models.User
 
-	result := datasource.DB.Where("email = ?", credentials.Email).First(&user)
+	result := datasource.DB.Where("email = ?", credentials.Email).Preload("Roles").First(&user)
 
 	if result.Error != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "message": "Invalid email or Password"})
