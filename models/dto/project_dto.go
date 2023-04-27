@@ -6,7 +6,12 @@ type ProjectResponse struct {
 	Id          uint   `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	UserId      uint   `json:"user_id"`
+	UserId      string `json:"userId"`
+}
+
+type JoinProject struct {
+	ProjectId string `json:"projectId"`
+	UserId    string `json:"userId"`
 }
 
 func GetProjectResponse(project *models.Project) ProjectResponse {
@@ -14,6 +19,6 @@ func GetProjectResponse(project *models.Project) ProjectResponse {
 		Id:          project.ID,
 		Name:        project.Name,
 		Description: project.Description,
-		UserId:      project.UserId,
+		UserId:      string(project.UserId),
 	}
 }

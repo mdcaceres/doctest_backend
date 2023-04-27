@@ -29,6 +29,18 @@ func GetUser(c *fiber.Ctx) error {
 	return c.JSON(user)
 }
 
+func GetByName(c *fiber.Ctx) error {
+	param := c.Params("name")
+
+	user, err := services.NewUserService().GetByUsername(param)
+
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": "Get by name failure", "errors": err.Error()})
+	}
+
+	return c.JSON(user)
+}
+
 func GetAll(c *fiber.Ctx) error {
 	user, err := services.NewUserService().GetAll()
 	if err != nil {

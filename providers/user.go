@@ -40,6 +40,17 @@ func (p *UserProvider) GetById(id uint) (*models.User, error) {
 	return &user, nil
 }
 
+func (p *UserProvider) GetByName(username string) (*models.User, error) {
+	user := models.User{
+		Name: username,
+	}
+	result := p.DB.Where("name = ?", username).First(&user)
+	if result.Error != nil {
+		return nil, errors.New(fmt.Sprintf("error in provider GetById ERROR: %s", result.Error))
+	}
+	return &user, nil
+}
+
 func (p *UserProvider) GetAll() (*[]models.User, error) {
 	var users []models.User
 

@@ -1,11 +1,13 @@
 package models
 
 import (
-	"gorm.io/gorm"
+	"time"
 )
 
 type Project struct {
-	gorm.Model
+	ID          uint `gorm:"primarykey"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 	Name        string
 	Description string
 	UserId      uint

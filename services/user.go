@@ -54,6 +54,18 @@ func (u *UserService) GetById(id uint) (*dto.UserResponse, error) {
 	return &userResponse, nil
 }
 
+func (u *UserService) GetByUsername(username string) (*dto.UserResponse, error) {
+	user, err := u.UserProvider.GetByName(username)
+
+	if err != nil {
+		return nil, err
+	}
+
+	userResponse := dto.GetUserResponse(user)
+
+	return &userResponse, nil
+}
+
 func (u *UserService) Create(c *fiber.Ctx, payload *auth.SignUpInput) (*dto.UserResponse, error) {
 	if payload.Password != payload.Confirm {
 		return nil, errors.New("password do not match")
