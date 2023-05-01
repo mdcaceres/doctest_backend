@@ -6,6 +6,7 @@ type InvitationRequest struct {
 	InviterID string `json:"inviterId"`
 	InvitedID string `json:"invitedId"`
 	ProjectId string `json:"projectId"`
+	Role      string `json:"role"`
 }
 
 type InvitationResponse struct {

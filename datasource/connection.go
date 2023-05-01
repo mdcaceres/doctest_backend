@@ -23,8 +23,9 @@ func Connect() {
 		&models.Project{},
 		&models.Role{},
 		&models.Bug{},
-		&test.Case{},
 		&models.Suite{},
+		&models.Invitation{},
+		&test.Case{},
 		&test.Step{},
 		&test.Result{})
 }

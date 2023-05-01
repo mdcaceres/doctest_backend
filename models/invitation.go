@@ -5,6 +5,7 @@ type Invitation struct {
 	InviterID    uint
 	InvitedID    uint
 	InvitedEmail string
+	Role         string
 	ProjectID    uint
 	Accepted     bool `gorm:"default:false"`
 }
