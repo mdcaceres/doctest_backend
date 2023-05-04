@@ -2,7 +2,6 @@ package datasource
 
 import (
 	"github.com/mdcaceres/doctest/models"
-	"github.com/mdcaceres/doctest/models/test"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -10,7 +9,7 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-	conn, err := gorm.Open(mysql.Open("root:admin@/doctest_db?parseTime=true"), &gorm.Config{})
+	conn, err := gorm.Open(mysql.Open("root:rootroot@/doctest_db?parseTime=true"), &gorm.Config{})
 
 	if err != nil {
 		panic("could not connect to doctest data base")
@@ -25,9 +24,9 @@ func Connect() {
 		&models.Bug{},
 		&models.Suite{},
 		&models.Invitation{},
-		&test.Case{},
-		&test.Step{},
-		&test.Result{})
+		&models.Case{},
+		&models.Step{},
+		&models.Priority{})
 }
 
 func GetDB() *gorm.DB {

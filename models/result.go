@@ -1,4 +1,4 @@
-package test
+package models
 
 import (
 	"gorm.io/gorm"

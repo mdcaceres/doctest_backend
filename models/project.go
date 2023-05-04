@@ -11,7 +11,8 @@ type Project struct {
 	Name        string
 	Description string
 	UserId      uint
-	Team        []*User  `gorm:"many2many:project_team"`
-	Suites      []*Suite `gorm:"many2many:project_suites"`
+	Team        []*User `gorm:"many2many:project_team"`
+	Suites      []*Suite
+	Cases       []*Case
 	Image       []byte
 }
