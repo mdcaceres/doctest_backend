@@ -7,5 +7,5 @@ type SignUpInput struct {
 	Confirm           string  `json:"confirm" validate:"required,min=8"`
 	EncryptPassword   *string `json:"encrypt_password"`
 	Photo             *string `json:"photo"`
-	NotificationToken string  `json:"notification_token"`
+	NotificationToken string  `json:"fcmToken"`
 }

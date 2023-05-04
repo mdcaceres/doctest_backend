@@ -41,3 +41,15 @@ func (p *ProjectProvider) Get(project *models.Project) (*models.Project, error) 
 	}
 	return project, nil
 }
+
+func (p *ProjectProvider) GetAll(userId string) (*[]models.Project, error) {
+	var projects []models.Project
+
+	result := p.DB.Find(&projects).Preload("team", "user_id = ?", userId)
+
+	if result.Error != nil {
+		return nil, errors.New(fmt.Sprintf("error in project provider GetAll ERROR: %s", result.Error))
+	}
+
+	return &projects, nil
+}

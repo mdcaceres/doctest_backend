@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/mdcaceres/doctest/models"
 	"github.com/mdcaceres/doctest/models/auth"
@@ -108,4 +109,14 @@ func (u *UserService) UpdateRole(id uint, roles []models.Role) (*dto.UserRespons
 	userResponse := dto.GetUserResponse(updatedUser)
 
 	return &userResponse, nil
+}
+
+func (u *UserService) UpdateFcmToken(id uint, token string) error {
+	err := u.UserProvider.UpdateFcmTokenById(id, token)
+
+	if err != nil {
+		errors.New(fmt.Sprintf("error updating token %v", err.Error()))
+	}
+
+	return nil
 }

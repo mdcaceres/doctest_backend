@@ -85,3 +85,19 @@ func (p *ProjectService) Join(c *fiber.Ctx, payload *dto.JoinProject) (*dto.Proj
 
 	return &response, nil
 }
+
+func (p *ProjectService) GetAll(userId string) (*[]dto.ProjectResponse, error) {
+	var responses []dto.ProjectResponse
+
+	projects, err := p.ProjectProvider.GetAll(userId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, p := range *projects {
+		responses = append(responses, dto.GetProjectResponse(&p))
+	}
+
+	return &responses, nil
+}

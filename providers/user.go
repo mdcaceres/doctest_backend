@@ -78,6 +78,25 @@ func (p *UserProvider) UpdateRoleById(id uint, roles []models.Role) (*models.Use
 	return &user, nil
 }
 
+func (p *UserProvider) UpdateFcmTokenById(id uint, token string) error {
+
+	user := models.User{
+		ID: id,
+	}
+
+	p.DB.First(&user)
+
+	user.NotificationToken = token
+
+	result := p.DB.Save(&user)
+
+	if result.Error != nil {
+		return errors.New(fmt.Sprintf("error in provider Update Roles ERROR: %s", result.Error))
+	}
+
+	return nil
+}
+
 func (p *UserProvider) UpdatePasswordById(id uint, password []byte) (*models.User, error) {
 	user := models.User{
 		ID:       id,

@@ -57,6 +57,7 @@ func DeserializeUser(c *fiber.Ctx) error {
 	}
 
 	c.Locals("user", dto.GetUserResponse(&user))
+	c.Locals("userId", user.ID)
 
 	return c.Next()
 }

@@ -43,14 +43,19 @@ func (i *InvitationService) Create(c *fiber.Ctx, payload *dto.InvitationRequest)
 		return nil, err
 	}
 
-	inviter, err := i.UserProvider.GetById(uint(invitedId))
-	if err != nil {
-		return nil, errors.New(fmt.Sprintf("user %d not found", inviter.ID))
-	}
-
 	invited, err := i.UserProvider.GetById(uint(invitedId))
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("user %d not found", invitedId))
+	}
+
+	inviterId, err := strconv.ParseUint(payload.InviterID, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	inviter, err := i.UserProvider.GetById(uint(inviterId))
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("user %d not found", inviter.ID))
 	}
 
 	role := models.GetRoleByName(payload.Role)
@@ -64,7 +69,6 @@ func (i *InvitationService) Create(c *fiber.Ctx, payload *dto.InvitationRequest)
 	}
 
 	/*
-
 		_, err = i.InvitationProvider.Get(&models.Invitation{ProjectID: uint(projectId), InvitedID: uint(invitedId)})
 		if err == nil {
 			return nil, errors.New(fmt.Sprintf("invitation for email %s already exists in project %d", payload.InviterID, projectId))
@@ -85,7 +89,7 @@ func (i *InvitationService) Create(c *fiber.Ctx, payload *dto.InvitationRequest)
 		return nil, err
 	}
 
-	i.MessagingProvider.SendToToken(invited.NotificationToken)
+	//i.MessagingProvider.SendToToken(invited.NotificationToken)
 
 	response := dto.GetInvitationResponse(createdInvitation)
 

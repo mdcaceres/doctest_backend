@@ -93,6 +93,8 @@ func Login(c *fiber.Ctx) error {
 
 	c.Cookie(&cookie)
 
+	c.Locals("userId", user.ID)
+
 	return c.JSON(fiber.Map{
 		"message": token,
 	})

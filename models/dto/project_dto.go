@@ -1,6 +1,9 @@
 package dto
 
-import "github.com/mdcaceres/doctest/models"
+import (
+	"github.com/mdcaceres/doctest/models"
+	"strconv"
+)
 
 type ProjectResponse struct {
 	Id          uint   `json:"id"`
@@ -19,6 +22,6 @@ func GetProjectResponse(project *models.Project) ProjectResponse {
 		Id:          project.ID,
 		Name:        project.Name,
 		Description: project.Description,
-		UserId:      string(project.UserId),
+		UserId:      strconv.FormatUint(uint64(project.UserId), 10),
 	}
 }

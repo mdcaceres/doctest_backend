@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/mdcaceres/doctest/config"
 	"github.com/mdcaceres/doctest/datasource"
 	"github.com/mdcaceres/doctest/routes"
 	"github.com/mdcaceres/doctest/utils/logs"
@@ -41,12 +42,12 @@ func StartApplication() {
 
 	log.Fatal(app.Listen(":8080"))
 
-	//initFireBase()
+	initFireBase()
 
 	logs.InfoLog.Println("space rocket in orbit")
 }
 
-//func initFireBase() {
-//app, _, _ := config.SetupFirebase()
-//services.SendToToken(app, "fcQ5n5Emz0aww8rlO4I4st:APA91bGVkJJcke2ERgxfpdZe0F2KmuiH4xmHm_bUjx1O76y3tjpkUmQ5zdxdbv44cQkqsdsXwlYHxZ53ercngm0P39rP5aL_JDJ3gi-tMrb7vwyU_dS3erAhAFgAHamq7IoWqioRFCGS")
-//}
+func initFireBase() {
+	_, _, _ = config.SetupFirebase()
+	//services.SendToToken(app, "fcQ5n5Emz0aww8rlO4I4st:APA91bGVkJJcke2ERgxfpdZe0F2KmuiH4xmHm_bUjx1O76y3tjpkUmQ5zdxdbv44cQkqsdsXwlYHxZ53ercngm0P39rP5aL_JDJ3gi-tMrb7vwyU_dS3erAhAFgAHamq7IoWqioRFCGS")
+}

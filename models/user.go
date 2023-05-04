@@ -16,5 +16,5 @@ type User struct {
 	Suites            []*Suite   `json:"suites"`
 	CreatedAt         *time.Time `json:"created_at" gorm:"not null;autoCreateTime"`
 	UpdatedAt         *time.Time `json:"updated_at" gorm:"not null;autoUpdateTime"`
-	NotificationToken string     `json:"notification_token"`
+	NotificationToken string     `json:"notification_token" gorm:"column:notification_token"`
 }
