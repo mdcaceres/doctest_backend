@@ -8,6 +8,7 @@ import (
 )
 
 func MapUrls(app *fiber.App) {
+	app.Get("/img/:id", handlers.Serve)
 	micro := app.Group("/api")
 	micro.Post("/auth/signup", handlers.Register)
 	micro.Post("/auth/login", handlers.Login)
@@ -16,8 +17,10 @@ func MapUrls(app *fiber.App) {
 	micro.Get("/user/:name", middleware.DeserializeUser, handlers.GetUserByName)
 	micro.Get("/user/id/:id", middleware.DeserializeUser, handlers.GetUserById)
 	micro.Get("/projects", middleware.DeserializeUser, handlers.GetProjects)
+	micro.Get("/project/id/:id", middleware.DeserializeUser, handlers.GetProject)
 	micro.Put("/user/:id", middleware.DeserializeUser, handlers.UpdateToken)
 	micro.Post("/projects", middleware.DeserializeUser, handlers.CreateProject)
+	micro.Put("/project/:id/img", middleware.DeserializeUser, handlers.UploadProjectImage)
 	micro.Post("/project/invitation", middleware.DeserializeUser, handlers.CreateInvitation)
 	micro.Put("/project/join", middleware.DeserializeUser, handlers.JoinProject)
 	micro.Get("/ping", handlers.Ping)

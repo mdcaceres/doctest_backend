@@ -10,6 +10,14 @@ type ProjectResponse struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	UserId      string `json:"userId"`
+	Image       string `json:"image"`
+}
+
+type ProjectRequest struct {
+	Id          uint   `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	UserId      string `json:"userId"`
 }
 
 type JoinProject struct {
@@ -23,5 +31,6 @@ func GetProjectResponse(project *models.Project) ProjectResponse {
 		Name:        project.Name,
 		Description: project.Description,
 		UserId:      strconv.FormatUint(uint64(project.UserId), 10),
+		Image:       project.Image,
 	}
 }

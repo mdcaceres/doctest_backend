@@ -18,22 +18,18 @@ func StartApplication() {
 
 	app := fiber.New()
 
+	app.Static("/", "../uploads")
+	app.Static("/", "./uploads") // Replace "./public" with the directory where your image files are located
 	loggerConfig := logger.Config{
 		Output: os.Stdout, // add file to save output
 	}
 
-	app.Use(
+	app.Use("/",
 		cors.New(cors.Config{
 			AllowCredentials: true,
 			AllowOrigins:     "http://localhost:4200",
 			AllowMethods:     "POST, PUT, DELETE, GET, OPTIONS",
 		}),
-		/*
-			AllowOrigins:     "http://localhost:3000",
-			AllowHeaders:     "Origin, Content-Type, Accept",
-			AllowMethods:     "GET, POST",
-			AllowCredentials: true,
-		*/
 
 		logger.New(loggerConfig),
 	)

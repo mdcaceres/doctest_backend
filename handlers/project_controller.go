@@ -6,19 +6,14 @@ import (
 	"github.com/mdcaceres/doctest/models/dto"
 	"github.com/mdcaceres/doctest/services"
 	"github.com/mdcaceres/doctest/utils"
+	"strconv"
 )
 
 func CreateProject(c *fiber.Ctx) error {
-	var payload *dto.ProjectResponse
+	var payload *dto.ProjectRequest
 
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
-	}
-
-	errors := utils.ValidateStruct(payload)
-
-	if errors != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": errors})
 	}
 
 	projectResponse, serviceError := services.NewProjectService().Create(c, payload)
@@ -39,6 +34,21 @@ func GetProjects(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"projects": ps}})
+}
+
+func GetProject(c *fiber.Ctx) error {
+	param := c.Params("id")
+	projectId, err := strconv.ParseUint(param, 10, 64)
+	if err != nil {
+		return err
+	}
+
+	p, e := services.NewProjectService().Get(uint(projectId))
+	if e != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": e.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"project": p}})
 }
 
 func JoinProject(c *fiber.Ctx) error {

@@ -14,5 +14,5 @@ type Project struct {
 	Team        []*User `gorm:"many2many:project_team"`
 	Suites      []*Suite
 	Cases       []*Case
-	Image       []byte
+	Image       string
 }

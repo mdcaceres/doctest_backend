@@ -9,7 +9,7 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-	conn, err := gorm.Open(mysql.Open("root:rootroot@/doctest_db?parseTime=true"), &gorm.Config{})
+	conn, err := gorm.Open(mysql.Open("root:admin@/doctest_db?parseTime=true"), &gorm.Config{})
 
 	if err != nil {
 		panic("could not connect to doctest data base")
@@ -31,4 +31,5 @@ func Connect() {
 
 func GetDB() *gorm.DB {
 	return DB
+
 }

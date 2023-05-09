@@ -1,10 +1,14 @@
 package services
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"github.com/mdcaceres/doctest/models"
 	"github.com/mdcaceres/doctest/models/dto"
 	"github.com/mdcaceres/doctest/providers"
+	"os"
+	"path"
 	"strconv"
 )
 
@@ -25,7 +29,37 @@ func NewProjectService() *ProjectService {
 	}
 }
 
-func (p *ProjectService) Create(c *fiber.Ctx, payload *dto.ProjectResponse) (*dto.ProjectResponse, error) {
+func (p *ProjectService) SaveProjectImage(projectID uint, fileBytes []byte) error {
+	project, err := p.ProjectProvider.Get(&models.Project{ID: projectID})
+	if err != nil {
+		return err
+	}
+
+	err = os.MkdirAll("uploads", os.ModePerm)
+	if err != nil {
+		return err
+	}
+
+	fileName := fmt.Sprintf("%d_%s", project.ID, uuid.NewString())
+	filePath := path.Join("uploads", fileName)
+
+	err = os.WriteFile(filePath, fileBytes, 0644)
+	if err != nil {
+		return err
+	}
+
+	project.Image = filePath
+
+	_, err = p.ProjectProvider.UpdateProject(project)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *ProjectService) Create(c *fiber.Ctx, payload *dto.ProjectRequest) (*dto.ProjectResponse, error) {
 	userId, err := strconv.ParseUint(payload.UserId, 10, 64)
 	if err != nil {
 		return nil, err
@@ -100,4 +134,16 @@ func (p *ProjectService) GetAll(userId string) (*[]dto.ProjectResponse, error) {
 	}
 
 	return &responses, nil
+}
+
+func (p *ProjectService) Get(id uint) (*dto.ProjectResponse, error) {
+	project, err := p.ProjectProvider.Get(&models.Project{ID: id})
+
+	if err != nil {
+		return nil, err
+	}
+
+	response := dto.GetProjectResponse(project)
+
+	return &response, nil
 }

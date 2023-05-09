@@ -7,9 +7,9 @@ import (
 
 type Case struct {
 	gorm.Model
-	Title       string
-	UserId      uint
-	Priority    Priority `gorm:"foreignKey:PriorityID"`
+	Title  string
+	UserId uint
+	//Priority    Priority `gorm:"foreignKey:PriorityID"`
 	Description string
 	Duration    time.Time
 	Steps       []*Step
