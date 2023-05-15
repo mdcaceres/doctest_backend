@@ -16,7 +16,7 @@ func CreateProject(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
 	}
 
-	projectResponse, serviceError := services.NewProjectService().Create(c, payload)
+	projectResponse, serviceError := services.NewProjectService().Create(payload)
 
 	if serviceError != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": serviceError.Error()})

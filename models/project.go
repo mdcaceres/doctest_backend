@@ -8,6 +8,8 @@ type Project struct {
 	ID          uint `gorm:"primarykey"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+	StartDate   time.Time
+	EndDate     time.Time
 	Name        string
 	Description string
 	UserId      uint
@@ -15,4 +17,5 @@ type Project struct {
 	Suites      []*Suite
 	Cases       []*Case
 	Image       string
+	ClientID    uint
 }

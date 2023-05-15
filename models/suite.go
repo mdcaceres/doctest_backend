@@ -10,6 +10,6 @@ type Suite struct {
 	Description string `json:"description"`
 	Target      string `json:"target"`
 	UserId      uint   `json:"user_id"`
-	ProjectId   uint   `json:"project_id"`
+	ProjectID   uint   `json:"project_id"`
 	TestCases   []*Case
 }

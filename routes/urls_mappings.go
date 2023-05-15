@@ -21,8 +21,13 @@ func MapUrls(app *fiber.App) {
 	micro.Put("/user/:id", middleware.DeserializeUser, handlers.UpdateToken)
 	micro.Post("/projects", middleware.DeserializeUser, handlers.CreateProject)
 	micro.Put("/project/:id/img", middleware.DeserializeUser, handlers.UploadProjectImage)
+	micro.Post("/test/:id/files", middleware.DeserializeUser, handlers.UploadFileToCase)
+	micro.Post("/clients", middleware.DeserializeUser, handlers.CreateClient)
 	micro.Post("/project/invitation", middleware.DeserializeUser, handlers.CreateInvitation)
 	micro.Put("/project/join", middleware.DeserializeUser, handlers.JoinProject)
+	micro.Post("/project/:id/suite", middleware.DeserializeUser, handlers.CreateSuite)
+	micro.Get("/project/:id/suites", middleware.DeserializeUser, handlers.GetSuites)
+	micro.Post("/project/:id/test", middleware.DeserializeUser, handlers.CreateCase)
 	micro.Get("/ping", handlers.Ping)
 	micro.All("*", func(c *fiber.Ctx) error {
 		path := c.Path()

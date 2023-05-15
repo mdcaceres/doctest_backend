@@ -10,11 +10,14 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"time"
 )
 
 type IProjectService interface {
 	Join(c *fiber.Ctx, payload *dto.JoinProject)
-	Create(c *fiber.Ctx, payload *dto.ProjectResponse) (*dto.ProjectResponse, error)
+	Create(payload *dto.ProjectResponse) (*dto.ProjectResponse, error)
+	GetAll(userId string) (*[]dto.ProjectResponse, error)
+	SaveProjectImage(projectID uint, fileBytes []byte) error
 }
 
 type ProjectService struct {
@@ -59,15 +62,34 @@ func (p *ProjectService) SaveProjectImage(projectID uint, fileBytes []byte) erro
 	return nil
 }
 
-func (p *ProjectService) Create(c *fiber.Ctx, payload *dto.ProjectRequest) (*dto.ProjectResponse, error) {
+func (p *ProjectService) Create(payload *dto.ProjectRequest) (*dto.ProjectResponse, error) {
 	userId, err := strconv.ParseUint(payload.UserId, 10, 64)
 	if err != nil {
 		return nil, err
 	}
+
+	clientId, err := strconv.ParseUint(payload.ClientId, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	start, err := time.Parse("2006-01-02", payload.StartDate)
+	if err != nil {
+		return nil, err
+	}
+
+	end, err := time.Parse("2006-01-02", payload.EndDate)
+	if err != nil {
+		return nil, err
+	}
+
 	project := models.Project{
 		Name:        payload.Name,
 		Description: payload.Description,
+		StartDate:   start,
+		EndDate:     end,
 		UserId:      uint(userId),
+		ClientID:    uint(clientId),
 	}
 
 	createdProject, err := p.ProjectProvider.Create(&project)
