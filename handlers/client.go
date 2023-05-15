@@ -21,3 +21,15 @@ func CreateClient(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "data": fiber.Map{"client": resp}})
 }
+
+func GetClients(c *fiber.Ctx) error {
+	userID := c.Params("userId")
+
+	resp, err := services.NewClientService().GetAll(userID)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"clients": resp}})
+}

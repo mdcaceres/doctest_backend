@@ -23,6 +23,7 @@ func MapUrls(app *fiber.App) {
 	micro.Put("/project/:id/img", middleware.DeserializeUser, handlers.UploadProjectImage)
 	micro.Post("/test/:id/files", middleware.DeserializeUser, handlers.UploadFileToCase)
 	micro.Post("/clients", middleware.DeserializeUser, handlers.CreateClient)
+	micro.Post("/clients/:userId", middleware.DeserializeUser, handlers.GetClients)
 	micro.Post("/project/invitation", middleware.DeserializeUser, handlers.CreateInvitation)
 	micro.Put("/project/join", middleware.DeserializeUser, handlers.JoinProject)
 	micro.Post("/project/:id/suite", middleware.DeserializeUser, handlers.CreateSuite)

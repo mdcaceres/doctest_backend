@@ -18,16 +18,19 @@ type ProjectClientRequest struct {
 }
 
 func GetProjectClientResponse(projectClient *models.ProjectClient) ProjectClientResponse {
-	var projects []ProjectResponse
-	for _, project := range projectClient.Projects {
-		projects = append(projects, GetProjectResponse(project))
-	}
-
 	return ProjectClientResponse{
 		Id:          projectClient.ID,
 		Name:        projectClient.Name,
 		Email:       projectClient.Email,
 		PhoneNumber: projectClient.PhoneNumber,
-		Projects:    projects,
 	}
+}
+
+func GetProjectClientResponses(projectClient []models.ProjectClient) []ProjectClientResponse {
+	var projects []ProjectClientResponse
+	for _, project := range projectClient {
+		projects = append(projects, GetProjectClientResponse(&project))
+	}
+
+	return projects
 }
