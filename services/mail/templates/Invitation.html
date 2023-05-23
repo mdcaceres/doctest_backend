@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Invitation</title>
+</head>
+<body>
+<h1>Project Invitation</h1>
+<p>You have been invited by {{.Name}} to join Project {{.ProjectName}}.</p>
+
+<form action="http://localhost:8080/api/project/join" method="GET">
+    <input type="hidden" name="userId" value="{{.InvitedId}}">
+    <input type="hidden" name="projectId" value="{{.ProjectId}}">
+    <button id="acceptButton" class="btn btn-success">Accept</button>
+</form>
+</body>
+</html>

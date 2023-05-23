@@ -42,12 +42,17 @@ func GetUserByName(c *fiber.Ctx) error {
 	return c.JSON(user)
 }
 
-func GetAll(c *fiber.Ctx) error {
-	user, err := services.NewUserService().GetAll()
+func GetAllByProject(c *fiber.Ctx) error {
+	param := c.Params("id")
+	projectId, err := strconv.ParseUint(param, 10, 64)
+	if err != nil {
+		return err
+	}
+	users, err := services.NewUserService().GetAllByProject(uint(projectId))
 	if err != nil {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "Get All failure", "errors": err.Error()})
 	}
-	return c.JSON(user)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"users": users}})
 }
 
 func UpdateToken(c *fiber.Ctx) error {

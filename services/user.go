@@ -44,6 +44,21 @@ func (u *UserService) GetAll() (*[]dto.UserResponse, error) {
 	return &responses, nil
 }
 
+func (u *UserService) GetAllByProject(projectId uint) (*[]dto.UserResponse, error) {
+	var responses []dto.UserResponse
+
+	users, err := u.UserProvider.GetByProject(projectId)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, user := range *users {
+		responses = append(responses, dto.GetUserResponse(&user))
+	}
+
+	return &responses, nil
+}
+
 func (u *UserService) GetById(id uint) (*dto.UserResponse, error) {
 	user, err := u.UserProvider.GetById(id)
 	if err != nil {

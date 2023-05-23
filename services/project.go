@@ -7,6 +7,7 @@ import (
 	"github.com/mdcaceres/doctest/models"
 	"github.com/mdcaceres/doctest/models/dto"
 	"github.com/mdcaceres/doctest/providers"
+	"github.com/mdcaceres/doctest/services/mail"
 	"os"
 	"path"
 	"strconv"
@@ -23,12 +24,14 @@ type IProjectService interface {
 type ProjectService struct {
 	ProjectProvider providers.ProjectProvider
 	UserProvider    providers.UserProvider
+	EmailService    *mail.EmailService
 }
 
 func NewProjectService() *ProjectService {
 	return &ProjectService{
 		ProjectProvider: providers.NewProjectProvider(),
 		UserProvider:    providers.NewUserProvider(),
+		EmailService:    mail.NewEmailService(),
 	}
 }
 
@@ -68,28 +71,23 @@ func (p *ProjectService) Create(payload *dto.ProjectRequest) (*dto.ProjectRespon
 		return nil, err
 	}
 
-	clientId, err := strconv.ParseUint(payload.ClientId, 10, 64)
+	start, err := time.Parse(time.RFC3339Nano, payload.StartDate)
 	if err != nil {
 		return nil, err
 	}
 
-	start, err := time.Parse("2006-01-02", payload.StartDate)
-	if err != nil {
-		return nil, err
-	}
-
-	end, err := time.Parse("2006-01-02", payload.EndDate)
+	end, err := time.Parse(time.RFC3339, payload.EndDate)
 	if err != nil {
 		return nil, err
 	}
 
 	project := models.Project{
-		Name:        payload.Name,
-		Description: payload.Description,
-		StartDate:   start,
-		EndDate:     end,
-		UserId:      uint(userId),
-		ClientID:    uint(clientId),
+		Name:            payload.Name,
+		Description:     payload.Description,
+		StartDate:       start,
+		EndDate:         end,
+		UserId:          uint(userId),
+		ProjectClientID: payload.ClientId,
 	}
 
 	createdProject, err := p.ProjectProvider.Create(&project)

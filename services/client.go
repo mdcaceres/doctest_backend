@@ -22,10 +22,16 @@ func NewClientService() *ClientService {
 }
 
 func (c *ClientService) Create(payload *dto.ProjectClientRequest) (*dto.ProjectClientResponse, error) {
+	id, error := strconv.ParseUint(payload.UserId, 10, 64)
+	if error != nil {
+		return nil, error
+	}
+
 	client := &models.ProjectClient{
 		Name:        payload.Name,
 		Email:       payload.Email,
 		PhoneNumber: payload.PhoneNumber,
+		UserId:      uint(id),
 	}
 
 	_, err := c.ClientProvider.CreateClient(client)

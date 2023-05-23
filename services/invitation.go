@@ -7,6 +7,8 @@ import (
 	"github.com/mdcaceres/doctest/models"
 	"github.com/mdcaceres/doctest/models/dto"
 	"github.com/mdcaceres/doctest/providers"
+	"github.com/mdcaceres/doctest/services/mail"
+	"os"
 	"strconv"
 )
 
@@ -21,6 +23,7 @@ type InvitationService struct {
 	ProjectProvider    providers.ProjectProvider
 	UserProvider       providers.UserProvider
 	MessagingProvider  providers.MessagingProvider
+	EmailService       *mail.EmailService
 }
 
 func NewInvitationService() *InvitationService {
@@ -29,6 +32,7 @@ func NewInvitationService() *InvitationService {
 		UserProvider:       providers.NewUserProvider(),
 		ProjectProvider:    providers.NewProjectProvider(),
 		MessagingProvider:  providers.NewMessagingProvider(),
+		EmailService:       mail.NewEmailService(),
 	}
 }
 
@@ -85,6 +89,20 @@ func (i *InvitationService) Create(c *fiber.Ctx, payload *dto.InvitationRequest)
 
 	createdInvitation, err := i.InvitationProvider.Create(&invitation)
 
+	if err != nil {
+		return nil, err
+	}
+
+	mailData := dto.InviteMailData{
+		Name:      inviter.Name,
+		To:        []string{invited.Email},
+		InvitedId: payload.InvitedID,
+		ProjectId: payload.ProjectId,
+		Subject:   "New project invitation",
+		Url:       fmt.Sprintf("%s%v", os.Getenv("VIEW_INVITATION"), createdInvitation.ID),
+	}
+
+	err = i.EmailService.SendInvitation(&mailData)
 	if err != nil {
 		return nil, err
 	}

@@ -26,7 +26,8 @@ func Connect() {
 		&models.Invitation{},
 		&models.Case{},
 		&models.Step{},
-		&models.Priority{})
+		&models.Priority{},
+		&models.ProjectClient{})
 }
 
 func GetDB() *gorm.DB {

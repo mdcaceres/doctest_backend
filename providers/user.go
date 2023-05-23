@@ -63,6 +63,18 @@ func (p *UserProvider) GetAll() (*[]models.User, error) {
 	return &users, nil
 }
 
+func (p *UserProvider) GetByProject(projectId uint) (*[]models.User, error) {
+	var users []models.User
+
+	result := p.DB.Joins("JOIN project_team ON project_team.user_id = users.id").Where("project_team.project_id = ?", projectId).Find(&users)
+
+	if result.Error != nil {
+		return nil, errors.New(fmt.Sprintf("error in provider GetAll ERROR: %s", result.Error))
+	}
+
+	return &users, nil
+}
+
 func (p *UserProvider) UpdateRoleById(id uint, roles []models.Role) (*models.User, error) {
 	user := models.User{
 		ID:    id,

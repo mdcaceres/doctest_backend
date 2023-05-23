@@ -3,11 +3,11 @@ package dto
 import "github.com/mdcaceres/doctest/models"
 
 type ProjectClientResponse struct {
-	Id          uint              `json:"id"`
-	Name        string            `json:"name"`
-	Email       string            `json:"email"`
-	PhoneNumber string            `json:"phoneNumber"`
-	Projects    []ProjectResponse `json:"projects"`
+	Id          uint   `json:"id"`
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phone"`
+	//Projects    []ProjectResponse `json:"projects"`
 }
 
 type ProjectClientRequest struct {
@@ -15,6 +15,7 @@ type ProjectClientRequest struct {
 	Name        string `json:"name"`
 	Email       string `json:"email"`
 	PhoneNumber string `json:"phoneNumber"`
+	UserId      string
 }
 
 func GetProjectClientResponse(projectClient *models.ProjectClient) ProjectClientResponse {

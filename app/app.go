@@ -36,11 +36,11 @@ func StartApplication() {
 
 	routes.MapUrls(app)
 
-	log.Fatal(app.Listen(":8080"))
-
 	initFireBase()
 
 	logs.InfoLog.Println("space rocket in orbit")
+
+	log.Fatal(app.Listen(":8080"))
 }
 
 func initFireBase() {

@@ -13,8 +13,9 @@ type User struct {
 	Email             string     `json:"email" gorm:"unique"`
 	Password          []byte     `json:"-"`
 	Projects          []*Project `json:"projects"`
-	Suites            []*Suite   `json:"suites"`
 	Cases             []*Case    `json:"cases"`
+	Suites            []*Suite   `json:"suites"`
+	Bugs              []*Bug     `json:"bugs"`
 	CreatedAt         *time.Time `json:"created_at" gorm:"not null;autoCreateTime"`
 	UpdatedAt         *time.Time `json:"updated_at" gorm:"not null;autoUpdateTime"`
 	NotificationToken string     `json:"notification_token" gorm:"column:notification_token"`

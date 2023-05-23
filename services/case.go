@@ -88,7 +88,7 @@ func (c *CaseService) SaveFiles(caseId uint, files [][]byte) error {
 
 	t, err := c.CaseProvider.Get(test)
 	if err != nil {
-
+		return err
 	}
 
 	err = os.MkdirAll("uploads", os.ModePerm)
@@ -106,11 +106,28 @@ func (c *CaseService) SaveFiles(caseId uint, files [][]byte) error {
 		t.Files = append(t.Files, filePath)
 	}
 
-	_, err = c.CaseProvider.UpdateCaseFiles(t)
+	_, err = c.CaseProvider.Update(t)
 
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (c *CaseService) GetAllByProjectId(id string) (*[]dto.CaseResponse, error) {
+	projectId, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	cases, err := c.CaseProvider.GetAllByProjectId(uint(projectId))
+
+	if err != nil {
+		return nil, err
+	}
+
+	casesResponse := dto.GetCaseResponses(cases)
+
+	return &casesResponse, nil
 }

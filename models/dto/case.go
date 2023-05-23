@@ -48,3 +48,13 @@ func GetCaseResponse(testCase *models.Case) CaseResponse {
 		Status:   testCase.Status,
 	}
 }
+
+func GetCaseResponses(testCases *[]models.Case) []CaseResponse {
+	var cases []CaseResponse
+
+	for _, testCase := range *testCases {
+		cases = append(cases, GetCaseResponse(&testCase))
+	}
+
+	return cases
+}

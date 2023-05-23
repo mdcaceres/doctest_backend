@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	//"github.com/gofiber/fiber/v2"
 	"github.com/mdcaceres/doctest/models/dto"
 	"github.com/mdcaceres/doctest/services"
 	"github.com/mdcaceres/doctest/utils"
@@ -52,10 +53,21 @@ func GetProject(c *fiber.Ctx) error {
 }
 
 func JoinProject(c *fiber.Ctx) error {
-	var payload *dto.JoinProject
+	/*var payload *dto.JoinProject
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
+	}*/
+
+	//userId := c.Query("userId")
+	//projectId := c.Query("projectId")
+
+	payload := &dto.JoinProject{
+		ProjectId: c.Query("projectId"),
+		UserId:    c.Query("userId"),
 	}
+
+	//payload.ProjectId = projectId
+	//payload.UserId = userId
 
 	errors := utils.ValidateStruct(payload)
 	if errors != nil {

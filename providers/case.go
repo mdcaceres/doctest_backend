@@ -28,13 +28,10 @@ func (c *CaseProvider) Create(testCase *models.Case) (*models.Case, error) {
 
 func (c *CaseProvider) GetAllByProjectId(projectId uint) (*[]models.Case, error) {
 	var cases []models.Case
-
-	result := c.DB.Find(&cases).Where("project_id = ?", projectId)
-
+	result := c.DB.Where("project_id = ?", projectId).Find(&cases)
 	if result.Error != nil {
 		return nil, errors.New(fmt.Sprintf("error getting all test cases from our database [error:%v]", result.Error))
 	}
-
 	return &cases, nil
 }
 
@@ -58,7 +55,7 @@ func (c *CaseProvider) GetAllBySuiteId(suiteId uint) (*[]models.Case, error) {
 	return &cases, nil
 }
 
-func (c *CaseProvider) UpdateCaseFiles(test *models.Case) (*models.Case, error) {
+func (c *CaseProvider) Update(test *models.Case) (*models.Case, error) {
 	result := c.DB.Save(test)
 	if result.Error != nil {
 		return nil, errors.New(fmt.Sprintf("error updating test case [error:%v]", result.Error))

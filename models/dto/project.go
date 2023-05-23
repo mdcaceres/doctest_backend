@@ -20,10 +20,10 @@ type ProjectRequest struct {
 	Id          uint   `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	StartDate   string `json:"startDate"`
-	EndDate     string `json:"endDate"`
+	StartDate   string `json:"start"`
+	EndDate     string `json:"end"`
 	UserId      string `json:"userId"`
-	ClientId    string `json:"clientId"`
+	ClientId    uint   `json:"clientId"`
 }
 
 type JoinProject struct {
