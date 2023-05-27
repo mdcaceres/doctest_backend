@@ -19,4 +19,5 @@ type Bug struct {
 	AssignedId uint        `json:"assigned_id"`
 	Files      media.Files `gorm:"type:VARCHAR(255)"`
 	Due        time.Time   `json:"due"`
+	Comments   []BugComment
 }

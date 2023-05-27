@@ -66,7 +66,7 @@ func JoinProject(c *fiber.Ctx) error {
 		UserId:    c.Query("userId"),
 	}
 
-	//payload.ProjectId = projectId
+	//payload.ProjectID = projectId
 	//payload.UserId = userId
 
 	errors := utils.ValidateStruct(payload)

@@ -40,7 +40,7 @@ func GetCaseResponse(testCase *models.Case) CaseResponse {
 		CreatorId:   testCase.UserID,
 		Title:       testCase.Title,
 		Type:        testCase.Type,
-		SuiteId:     testCase.SuiteId,
+		SuiteId:     testCase.SuiteID,
 		Priority:    testCase.Priority,
 		Description: testCase.Description,
 		//Steps:       testCase.Steps,

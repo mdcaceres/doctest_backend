@@ -41,3 +41,19 @@ func GetBugByUserId(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"bugs": bugs}})
 }
+
+func AddBugComment(c *fiber.Ctx) error {
+	var payload *dto.BugCommentRequest
+
+	if err := c.BodyParser(&payload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
+	}
+
+	bug, err := services.NewBugService().AddComment(payload)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"bug": bug}})
+}

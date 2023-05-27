@@ -38,7 +38,7 @@ func (c *CaseService) Create(payload *dto.CaseRequest) (*dto.CaseResponse, error
 	if err != nil {
 		return nil, err
 	}
-	/*suiteId, err := strconv.ParseInt(payload.SuiteId, 10, 64)
+	/*suiteId, err := strconv.ParseInt(payload.SuiteID, 10, 64)
 	if err != nil {
 		return nil, err
 	}*/
@@ -66,8 +66,8 @@ func (c *CaseService) Create(payload *dto.CaseRequest) (*dto.CaseResponse, error
 		Description: payload.Description,
 		Duration:    duration,
 		Steps:       steps,
-		ProjectId:   uint(projectId),
-		SuiteId:     payload.SuiteId,
+		ProjectID:   uint(projectId),
+		SuiteID:     payload.SuiteId,
 		Status:      payload.Status,
 	}
 

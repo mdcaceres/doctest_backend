@@ -28,7 +28,7 @@ func (b *BugProvider) Create(bug *models.Bug) (*models.Bug, error) {
 
 func (b *BugProvider) GetAllByProjectId(projectId uint) (*[]models.Bug, error) {
 	var bugs []models.Bug
-	result := b.DB.Where("project_id = ?", projectId).Find(&bugs)
+	result := b.DB.Preload("Comments").Where("project_id = ?", projectId).Find(&bugs)
 	if result.Error != nil {
 		return nil, errors.New(fmt.Sprintf("error getting all bugs by project from our database [error:%v]", result.Error))
 	}
@@ -58,5 +58,24 @@ func (b *BugProvider) Update(bug *models.Bug) (*models.Bug, error) {
 	if result.Error != nil {
 		return nil, errors.New(fmt.Sprintf("error updating bug files in our database [error:%v]", result.Error))
 	}
+	return bug, nil
+}
+
+func (b *BugProvider) AddComment(bugComment *models.BugComment) (*models.Bug, error) {
+
+	bug, err := b.GetById(bugComment.BugID)
+
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("error adding comment to bug in our database [error:%v]", err))
+	}
+
+	bug.Comments = append(bug.Comments, *bugComment)
+
+	result := datasource.GetDB().Save(&bug)
+
+	if result.Error != nil {
+		return nil, errors.New(fmt.Sprintf("error adding comment to bug in our database [error:%v]", result.Error))
+	}
+
 	return bug, nil
 }

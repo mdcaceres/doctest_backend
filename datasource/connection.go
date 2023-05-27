@@ -1,7 +1,10 @@
 package datasource
 
 import (
+	"fmt"
 	"github.com/mdcaceres/doctest/models"
+	"github.com/mdcaceres/doctest/models/execution/SuiteExecution"
+	"github.com/mdcaceres/doctest/models/execution/TestExecution"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -17,7 +20,7 @@ func Connect() {
 
 	DB = conn
 
-	conn.AutoMigrate(
+	err = conn.AutoMigrate(
 		&models.User{},
 		&models.Project{},
 		&models.Role{},
@@ -27,7 +30,16 @@ func Connect() {
 		&models.Case{},
 		&models.Step{},
 		&models.Priority{},
-		&models.ProjectClient{})
+		&models.ProjectClient{},
+		&TestExecution.TestExecution{},
+		&SuiteExecution.SuiteExecution{},
+		&models.TestComment{},
+		&models.BugComment{})
+	if err != nil {
+		fmt.Println("could not migrate models")
+		fmt.Println(err)
+		return
+	}
 }
 
 func GetDB() *gorm.DB {

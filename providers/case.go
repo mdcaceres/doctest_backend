@@ -21,7 +21,7 @@ func NewCaseProvider() CaseProvider {
 func (c *CaseProvider) Create(testCase *models.Case) (*models.Case, error) {
 	result := c.DB.Create(testCase)
 	if result.Error != nil {
-		return nil, errors.New(fmt.Sprintf("error creating new test case in our database [error:%v]", result.Error))
+		return nil, errors.New(fmt.Sprintf("error creating new TestExecution case in our database [error:%v]", result.Error))
 	}
 	return testCase, nil
 }
@@ -30,7 +30,7 @@ func (c *CaseProvider) GetAllByProjectId(projectId uint) (*[]models.Case, error)
 	var cases []models.Case
 	result := c.DB.Where("project_id = ?", projectId).Find(&cases)
 	if result.Error != nil {
-		return nil, errors.New(fmt.Sprintf("error getting all test cases from our database [error:%v]", result.Error))
+		return nil, errors.New(fmt.Sprintf("error getting all TestExecution cases from our database [error:%v]", result.Error))
 	}
 	return &cases, nil
 }
@@ -38,7 +38,7 @@ func (c *CaseProvider) GetAllByProjectId(projectId uint) (*[]models.Case, error)
 func (c *CaseProvider) Get(testCase *models.Case) (*models.Case, error) {
 	result := c.DB.First(testCase)
 	if result.Error != nil {
-		return nil, errors.New(fmt.Sprintf("test case id : %v not exists", testCase.ID))
+		return nil, errors.New(fmt.Sprintf("TestExecution case id : %v not exists", testCase.ID))
 	}
 	return testCase, nil
 }
@@ -49,7 +49,7 @@ func (c *CaseProvider) GetAllBySuiteId(suiteId uint) (*[]models.Case, error) {
 	result := c.DB.Find(&cases).Where("suite_id = ?", suiteId)
 
 	if result.Error != nil {
-		return nil, errors.New(fmt.Sprintf("error getting all test cases from our database [error:%v]", result.Error))
+		return nil, errors.New(fmt.Sprintf("error getting all TestExecution cases from our database [error:%v]", result.Error))
 	}
 
 	return &cases, nil
@@ -58,7 +58,7 @@ func (c *CaseProvider) GetAllBySuiteId(suiteId uint) (*[]models.Case, error) {
 func (c *CaseProvider) Update(test *models.Case) (*models.Case, error) {
 	result := c.DB.Save(test)
 	if result.Error != nil {
-		return nil, errors.New(fmt.Sprintf("error updating test case [error:%v]", result.Error))
+		return nil, errors.New(fmt.Sprintf("error updating TestExecution case [error:%v]", result.Error))
 	}
 	return test, nil
 }

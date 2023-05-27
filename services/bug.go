@@ -16,6 +16,7 @@ type IBugService interface {
 	GetAllByProjectId(projectID uint) (*[]dto.BugResponse, error)
 	GetAllByUserId(userID uint) (*[]dto.BugResponse, error)
 	Update(payload *dto.BugRequest) (*dto.BugResponse, error)
+	AddComment(payload *dto.BugCommentRequest) (*dto.BugCommentResponse, error)
 }
 
 type BugService struct {
@@ -136,4 +137,16 @@ func (b *BugService) SaveFiles(bugId uint, files [][]byte) error {
 	}
 
 	return nil
+}
+
+func (b *BugService) AddComment(payload *dto.BugCommentRequest) (*dto.BugResponse, error) {
+	comment := payload.ToEntity()
+
+	bug, err := b.BugProvider.AddComment(comment)
+	if err != nil {
+		return nil, err
+	}
+
+	response := dto.GetBugResponse(bug)
+	return &response, nil
 }

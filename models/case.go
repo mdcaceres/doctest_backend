@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/mdcaceres/doctest/models/execution/TestExecution"
 	"github.com/mdcaceres/doctest/models/media"
 	"time"
 )
@@ -16,8 +17,10 @@ type Case struct {
 	Description string
 	Duration    time.Duration
 	Steps       []Step
-	ProjectId   uint
-	SuiteId     uint
+	ProjectID   uint
+	SuiteID     uint
 	Status      string
 	Files       media.Files `gorm:"type:VARCHAR(255)"`
+	Execution   []TestExecution.TestExecution
+	Comments    []TestComment
 }
