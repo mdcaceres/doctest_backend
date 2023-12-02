@@ -1,0 +1,151 @@
+@startuml
+package .{
+
+class Bug {
++ID: uint
++CreatedAt: Time
++UpdatedAt: Time
++Name: string
++Description: string
++UserID: uint
++ProjectID: uint
++Status: string
++Priority: string
++Severity: string
++AssignedId: uint
++Files: Files
++Due: Time
++Comments: []BugComment
+
+}
+class Case {
++ID: uint
++CreatedAt: Time
++UpdatedAt: Time
++Title: string
++UserID: uint
++Type: string
++Priority: string
++Description: string
++Duration: Duration
++Steps: []Step
++ProjectID: uint
++SuiteID: uint
++Status: string
++Files: Files
++Execution: []TestExecution
++Comments: []TestComment
+
+}
+class ProjectClient {
++: Model
++Name: string
++Email: string
++PhoneNumber: string
++UserId: uint
+
+}
+class BugComment {
++: Model
++Comment: string
++BugID: uint
++UserID: uint
+
+}
+class TestComment {
++: Model
++Comment: string
++CaseID: uint
++UserID: uint
+
+}
+class Invitation {
++ID: uint
++InviterID: uint
++InvitedID: uint
++InvitedEmail: string
++Role: string
++ProjectID: uint
++Accepted: bool
+
+}
+class Post {
++ID: uint
++CreatedAt: Time
++Comment: string
++ProjectID: uint
++UserID: uint
++Image: string
+
+}
+class Priority {
++: Model
++Value: string
+
+}
+class Project {
++ID: uint
++CreatedAt: Time
++UpdatedAt: Time
++StartDate: Time
++EndDate: Time
++Name: string
++Description: string
++UserId: uint
++Team: []*User
++Suites: []*Suite
++Cases: []*Case
++Bugs: []*Bug
++Image: string
++ProjectClientID: uint
+
+}
+class Result {
++: Model
+
+}
+class Role {
++: Model
++Name: string
++Users: []User
+
+}
+class Step {
++: Model
++Order: uint
++Description: string
++Result: string
++CaseID: uint
+
+}
+class Suite {
++: Model
++Name: string
++Description: string
++Target: string
++UserId: uint
++ProjectID: uint
++TestCases: []*Case
+
+}
+class User {
++ID: uint
++Name: string
++LastName: string
++Roles: []Role
++Photo: *string
++Email: string
++Password: []byte
++Projects: []*Project
++Cases: []*Case
++Suites: []*Suite
++Bugs: []*Bug
++CreatedAt: *Time
++UpdatedAt: *Time
++NotificationToken: string
+
+}
+}
+
+
+@enduml

@@ -34,3 +34,29 @@ func GetAllCasesByProjectId(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"cases": cases}})
 
 }
+
+func GetCaseById(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	testCase, err := services.NewCaseService().GetById(id)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"case": testCase}})
+
+}
+
+func GetAllByUserId(c *fiber.Ctx) error {
+	projectID := c.Params("id")
+
+	cases, err := services.NewCaseService().GetAllByUserId(projectID)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "data": fiber.Map{"cases": cases}})
+
+}

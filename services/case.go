@@ -15,8 +15,10 @@ import (
 
 type ICaseService interface {
 	Create(payload *dto.CaseRequest) (*dto.CaseResponse, error)
-	GetAllByProjectId(projectID uint) (*[]dto.CaseResponse, error)
-	GetAllBySuiteId(suiteID uint) (*[]dto.CaseResponse, error)
+	SaveFiles(caseId uint, files [][]byte) error
+	GetById(id string) (*dto.CaseResponse, error)
+	GetAllByProjectId(id string) (*[]dto.CaseResponse, error)
+	GetAllByUserId(id string) (*[]dto.CaseResponse, error)
 }
 
 type CaseService struct {
@@ -115,6 +117,26 @@ func (c *CaseService) SaveFiles(caseId uint, files [][]byte) error {
 	return nil
 }
 
+func (c *CaseService) GetById(id string) (*dto.CaseResponse, error) {
+	caseId, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	caseModel := &models.Case{
+		ID: uint(caseId),
+	}
+
+	caseModel, err = c.CaseProvider.Get(caseModel)
+	if err != nil {
+		return nil, err
+	}
+
+	caseResponse := dto.GetCaseResponse(caseModel)
+
+	return &caseResponse, nil
+}
+
 func (c *CaseService) GetAllByProjectId(id string) (*[]dto.CaseResponse, error) {
 	projectId, err := strconv.ParseUint(id, 10, 64)
 	if err != nil {
@@ -122,6 +144,23 @@ func (c *CaseService) GetAllByProjectId(id string) (*[]dto.CaseResponse, error) 
 	}
 
 	cases, err := c.CaseProvider.GetAllByProjectId(uint(projectId))
+
+	if err != nil {
+		return nil, err
+	}
+
+	casesResponse := dto.GetCaseResponses(cases)
+
+	return &casesResponse, nil
+}
+
+func (c *CaseService) GetAllByUserId(id string) (*[]dto.CaseResponse, error) {
+	userId, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	cases, err := c.CaseProvider.GetAllByUserId(uint(userId))
 
 	if err != nil {
 		return nil, err

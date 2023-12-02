@@ -32,9 +32,11 @@ func Connect() {
 		&models.Priority{},
 		&models.ProjectClient{},
 		&TestExecution.TestExecution{},
+		&TestExecution.ExecutionStep{},
 		&SuiteExecution.SuiteExecution{},
 		&models.TestComment{},
-		&models.BugComment{})
+		&models.BugComment{},
+		&models.Post{})
 	if err != nil {
 		fmt.Println("could not migrate models")
 		fmt.Println(err)

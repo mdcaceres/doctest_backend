@@ -7,6 +7,7 @@ import (
 )
 
 type BugRequest struct {
+	ID          uint   `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	UserID      uint   `json:"user_id"`
@@ -31,6 +32,7 @@ type BugResponse struct {
 	Severity    string               `json:"severity"`
 	AssignedId  uint                 `json:"assigned_id"`
 	Files       media.Files          `gorm:"type:VARCHAR(255)"`
+	CreatedAt   time.Time            `json:"created_at"`
 	Due         time.Time            `json:"due"`
 	Comments    []BugCommentResponse `json:"comments"`
 }
@@ -53,6 +55,7 @@ func GetBugResponse(bug *models.Bug) BugResponse {
 		Severity:   bug.Severity,
 		AssignedId: bug.AssignedId,
 		Files:      bug.Files,
+		CreatedAt:  bug.CreatedAt,
 		Due:        bug.Due,
 		Comments:   bugComments,
 	}
@@ -68,6 +71,7 @@ func GetBugResponses(bugs []models.Bug) []BugResponse {
 
 func (b *BugRequest) ToEntity() *models.Bug {
 	return &models.Bug{
+		ID:          b.ID,
 		Name:        b.Name,
 		Description: b.Description,
 		UserID:      b.UserID,

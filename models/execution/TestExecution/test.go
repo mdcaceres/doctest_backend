@@ -2,8 +2,8 @@ package TestExecution
 
 import (
 	"github.com/mdcaceres/doctest/models/execution"
-	"gorm.io/datatypes"
 	"gorm.io/gorm"
+	"time"
 )
 
 type TestExecution struct {
@@ -12,7 +12,8 @@ type TestExecution struct {
 	CaseID    uint
 	Status    string
 	UserId    uint
-	Asserts   datatypes.JSONMap
+	Duration  time.Duration
+	Steps     []ExecutionStep
 }
 
 func (e TestExecution) Execute() execution.IExecutable {

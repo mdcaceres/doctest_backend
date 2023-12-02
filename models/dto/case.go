@@ -19,19 +19,19 @@ type CaseRequest struct {
 }
 
 type CaseResponse struct {
-	ID          uint              `json:"id"`
-	CreatorId   uint              `json:"creator_id"`
-	Title       string            `json:"title"`
-	Type        string            `json:"type"`
-	SuiteId     uint              `json:"suite_id"`
-	Priority    string            `json:"priority"`
-	Description string            `json:"description"`
-	Steps       map[string]string `json:"steps"`
-	Duration    time.Duration     `json:"duration"`
-	Status      string            `json:"status"`
-	ProjectId   uint              `json:"project_id"`
-	CreatedAt   time.Time         `json:"created_at"`
-	UpdatedAt   time.Time         `json:"updated_at"`
+	ID          uint          `json:"id"`
+	CreatorId   uint          `json:"creator_id"`
+	Title       string        `json:"title"`
+	Type        string        `json:"type"`
+	SuiteId     uint          `json:"suite_id"`
+	Priority    string        `json:"priority"`
+	Description string        `json:"description"`
+	Steps       []models.Step `json:"steps"`
+	Duration    time.Duration `json:"duration"`
+	Status      string        `json:"status"`
+	ProjectId   uint          `json:"project_id"`
+	CreatedAt   time.Time     `json:"created_at"`
+	UpdatedAt   time.Time     `json:"updated_at"`
 }
 
 func GetCaseResponse(testCase *models.Case) CaseResponse {
@@ -43,9 +43,11 @@ func GetCaseResponse(testCase *models.Case) CaseResponse {
 		SuiteId:     testCase.SuiteID,
 		Priority:    testCase.Priority,
 		Description: testCase.Description,
-		//Steps:       testCase.Steps,
-		Duration: testCase.Duration,
-		Status:   testCase.Status,
+		Steps:       testCase.Steps,
+		Duration:    testCase.Duration,
+		Status:      testCase.Status,
+		CreatedAt:   testCase.CreatedAt,
+		UpdatedAt:   testCase.UpdatedAt,
 	}
 }
 

@@ -15,10 +15,11 @@ import (
 )
 
 type IProjectService interface {
-	Join(c *fiber.Ctx, payload *dto.JoinProject)
-	Create(payload *dto.ProjectResponse) (*dto.ProjectResponse, error)
-	GetAll(userId string) (*[]dto.ProjectResponse, error)
 	SaveProjectImage(projectID uint, fileBytes []byte) error
+	Create(payload *dto.ProjectRequest) (*dto.ProjectResponse, error)
+	Join(c *fiber.Ctx, payload *dto.JoinProject) (*dto.ProjectResponse, error)
+	GetAll(userId string) (*[]dto.ProjectResponse, error)
+	Get(id uint) (*dto.ProjectResponse, error)
 }
 
 type ProjectService struct {

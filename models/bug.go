@@ -2,12 +2,13 @@ package models
 
 import (
 	"github.com/mdcaceres/doctest/models/media"
-	"gorm.io/gorm"
 	"time"
 )
 
 type Bug struct {
-	gorm.Model
+	ID          uint `gorm:"primarykey"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	UserID      uint   `json:"user_id"`

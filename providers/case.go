@@ -35,8 +35,17 @@ func (c *CaseProvider) GetAllByProjectId(projectId uint) (*[]models.Case, error)
 	return &cases, nil
 }
 
+func (c *CaseProvider) GetAllByUserId(userId uint) (*[]models.Case, error) {
+	var cases []models.Case
+	result := c.DB.Where("user_id = ?", userId).Order("created_at desc").Find(&cases)
+	if result.Error != nil {
+		return nil, errors.New(fmt.Sprintf("error getting all TestExecution cases from our database [error:%v]", result.Error))
+	}
+	return &cases, nil
+}
+
 func (c *CaseProvider) Get(testCase *models.Case) (*models.Case, error) {
-	result := c.DB.First(testCase)
+	result := c.DB.Preload("Steps").First(testCase)
 	if result.Error != nil {
 		return nil, errors.New(fmt.Sprintf("TestExecution case id : %v not exists", testCase.ID))
 	}

@@ -46,7 +46,7 @@ func (b *BugProvider) GetById(id uint) (*models.Bug, error) {
 
 func (b *BugProvider) GetAllByUserId(userId uint) (*[]models.Bug, error) {
 	var bugs []models.Bug
-	result := b.DB.Joins("JOIN user_bug On user_bug.bug_id = bugs.id").Where("user_bug.user_id = ?", userId).Find(&bugs)
+	result := b.DB.Where("user_id = ?", userId).Find(&bugs)
 	if result.Error != nil {
 		return nil, errors.New(fmt.Sprintf("error getting all bugs bu user from our database [error:%v]", result.Error))
 	}
@@ -54,7 +54,7 @@ func (b *BugProvider) GetAllByUserId(userId uint) (*[]models.Bug, error) {
 }
 
 func (b *BugProvider) Update(bug *models.Bug) (*models.Bug, error) {
-	result := b.DB.Save(bug)
+	result := b.DB.Model(&models.Bug{}).Where("id = ?", bug.ID).Update("status", bug.Status)
 	if result.Error != nil {
 		return nil, errors.New(fmt.Sprintf("error updating bug files in our database [error:%v]", result.Error))
 	}

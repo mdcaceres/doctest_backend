@@ -9,6 +9,7 @@ import (
 
 type IClientService interface {
 	Create(payload *dto.ProjectClientRequest) (*dto.ProjectClientResponse, error)
+	GetAll(userId string) (*[]dto.ProjectClientResponse, error)
 }
 
 type ClientService struct {

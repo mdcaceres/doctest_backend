@@ -22,6 +22,22 @@ func CreateBug(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "data": fiber.Map{"bug": bug}})
 }
 
+func UpdateBug(c *fiber.Ctx) error {
+	var payload *dto.BugRequest
+
+	if err := c.BodyParser(&payload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
+	}
+
+	bug, err := services.NewBugService().Update(payload)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"status": "success", "data": fiber.Map{"bug": bug}})
+}
+
 func GetAllBugsByProjectId(c *fiber.Ctx) error {
 	param := c.Params("id")
 	bugs, err := services.NewBugService().GetAllByProjectId(param)
@@ -34,7 +50,8 @@ func GetAllBugsByProjectId(c *fiber.Ctx) error {
 
 func GetBugByUserId(c *fiber.Ctx) error {
 	param := c.Params("id")
-	bugs, err := services.NewBugService().GetAllByUserId(param)
+	status := c.Params("status")
+	bugs, err := services.NewBugService().GetAllByUserId(param, status)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "failure", "errors": err.Error()})
 	}

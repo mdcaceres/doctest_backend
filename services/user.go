@@ -14,9 +14,12 @@ import (
 
 type IUserService interface {
 	GetAll() (*[]dto.UserResponse, error)
-	GetById(id int64) (*dto.UserResponse, error)
-	Create(user auth.SignUpInput) (*dto.UserResponse, error)
-	UpdateRole(roles models.Role) (*dto.UserResponse, error)
+	GetAllByProject(projectId uint) (*[]dto.UserResponse, error)
+	GetById(id uint) (*dto.UserResponse, error)
+	GetByUsername(username string) (*dto.UserResponse, error)
+	Create(c *fiber.Ctx, payload *auth.SignUpInput) (*dto.UserResponse, error)
+	UpdateRole(id uint, roles []models.Role) (*dto.UserResponse, error)
+	UpdateFcmToken(id uint, token string) error
 }
 
 type UserService struct {

@@ -67,7 +67,7 @@ func JoinProject(c *fiber.Ctx) error {
 	}
 
 	//payload.ProjectID = projectId
-	//payload.UserId = userId
+	//payload.UserID = userId
 
 	errors := utils.ValidateStruct(payload)
 	if errors != nil {
