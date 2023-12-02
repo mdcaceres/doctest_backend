@@ -14,8 +14,8 @@ import (
 
 type IInvitationService interface {
 	Create(c *fiber.Ctx, payload *dto.InvitationRequest) (*dto.InvitationResponse, error)
-	Get(c *fiber.Ctx, id uint) (*dto.InvitationResponse, error)
-	Update(c *fiber.Ctx, id uint, payload *dto.InvitationRequest) (*dto.InvitationResponse, error)
+	GetAllByInvitedId(c *fiber.Ctx, invitedId uint) (*[]*dto.InvitationResponse, error)
+	Update(c *fiber.Ctx, id uint) (*dto.InvitationResponse, error)
 }
 
 type InvitationService struct {
