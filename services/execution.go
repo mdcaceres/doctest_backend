@@ -1,16 +1,19 @@
 package services
 
 import (
+	"errors"
 	"github.com/mdcaceres/doctest/models/dto"
 	"github.com/mdcaceres/doctest/models/execution/SuiteExecution"
 	"github.com/mdcaceres/doctest/models/execution/TestExecution"
 	"github.com/mdcaceres/doctest/providers"
 	"github.com/mdcaceres/doctest/services/mail"
+	"time"
 )
 
 type IExecutionService interface {
 	SaveTestExecution(payload *dto.TestExecutionRequest) (*TestExecution.TestExecution, error)
 	SaveSuiteExecution(suiteID uint) (*SuiteExecution.SuiteExecution, error)
+	GetPercentage(projectId string, status string, start time.Time, end time.Time) (float64, error)
 }
 
 type ExecutionService struct {
@@ -61,4 +64,24 @@ func NewExecutionService() IExecutionService {
 		ExecutionProvider: providers.NewExecutionProvider(),
 		EmailService:      mail.NewEmailService(),
 	}
+}
+
+func (s *ExecutionService) GetPercentage(projectId string, status string, start time.Time, end time.Time) (float64, error) {
+	count, err := s.ExecutionProvider.GetCountByProjectId(projectId, start, end)
+	if err != nil {
+		return 0, err
+	}
+	filtered, err := s.ExecutionProvider.GetByProjectIdStatusAndDateRange(projectId, status, start, end)
+	if err != nil {
+		return 0, err
+	}
+
+	ff := float64(len(filtered))
+	fc := float64(count)
+
+	if fc == 0 {
+		return 0, errors.New("cant divide by 0")
+	}
+	d := ff / fc
+	return d * float64(100), nil
 }

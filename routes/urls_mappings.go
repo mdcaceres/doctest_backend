@@ -28,6 +28,7 @@ func MapUrls(app *fiber.App) {
 	micro.Get("/test/user/:id", middleware.DeserializeUser, handlers.GetAllByUserId)
 	micro.Post("bug/:id/files", middleware.DeserializeUser, handlers.UploadFileToBug)
 	micro.Post("/test/:id/execution", middleware.DeserializeUser, handlers.ExecuteTest)
+	micro.Get("/report/execution/avg", middleware.DeserializeUser, handlers.GetAverage)
 	micro.Post("/clients/:userId", middleware.DeserializeUser, handlers.CreateClient)
 	micro.Get("/clients/:userId", middleware.DeserializeUser, handlers.GetClients)
 	micro.Post("/project/invitation", middleware.DeserializeUser, handlers.CreateInvitation)

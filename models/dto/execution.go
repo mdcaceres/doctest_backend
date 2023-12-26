@@ -14,6 +14,13 @@ type TestExecutionRequest struct {
 	Duration  time.Duration          `json:"duration"`
 }
 
+type TestExecutionReportRequest struct {
+	ProjectID uint   `json:"project_id"`
+	Status    string `json:"status"`
+	Start     time.Time
+	End       time.Time
+}
+
 type StepExecutionRequest struct {
 	Order       uint   `json:"number"`
 	Description string `json:"description"`
@@ -40,6 +47,10 @@ type StepExecutionResponse struct {
 	CaseID      uint
 	Status      string `json:"status"`
 	Comment     string `json:"comment"`
+}
+
+type TestExecutionAverageResponse struct {
+	Percentage float64 `json:"avg"`
 }
 
 func GetTestExecutionResponse(t *TestExecution.TestExecution) TestExecutionResponse {

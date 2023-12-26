@@ -1,0 +1,45 @@
+@startuml
+package .{
+
+
+
+class ClientProvider {
++DB: *DB
++CreateClient(client *ProjectClient): *ProjectClient, error
++GetAll(userId uint64): *[]ProjectClient, error
+}
+
+class MessagingProvider {
++FIRE: *App
++CTX: Context
++MSG: *Client
++SendToToken(token string)
+}
+class PostProvider {
++DB: *DB
++Create(Post *Post): *Post, error
++GetAllByProjectId(projectId uint): *[]Post, error
++GetById(id uint): *Post, error
++GetAllByUserId(userId uint): *[]Post, error
+}
+
+class SuiteProvider {
++DB: *DB
++Create(suite *Suite): *Suite, error
++GetAll(projectId uint): *[]Suite, error
+}
+class UserProvider {
++DB: *DB
++Create(user *User): *User, error
++GetById(id uint): *User, error
++GetByName(username string): *User, error
++GetAll(): *[]User, error
++GetByProject(projectId uint): *[]User, error
++UpdateRoleById(id uint, roles []Role): *User, error
++UpdateFcmTokenById(id uint, token string): error
++UpdatePasswordById(id uint, password []byte): *User, error
+}
+}
+
+"ExecutionProvider" --|> "IExecutionProvider"
+@enduml
